@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Gloock&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
 
@@ -47,6 +48,7 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" aria-label="Welcome">
+  <div class="hero__bg" aria-hidden="true"></div>
   <div class="hero__stage">
     <div class="hero__card">
       <div class="hero__copy">
@@ -87,29 +89,48 @@
       </div>
     </div>
 
+    <!-- Veil over the elliptical window; its hole grows on load so the course "opens" -->
+    <svg class="hero__veil" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <mask id="veilMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="620">
+          <ellipse cx="470" cy="352" rx="454" ry="114" transform="rotate(-15 470 352)" fill="white"/>
+          <g transform="rotate(-15 470 352)"><ellipse class="hero__veil-hole" cx="470" cy="352" rx="456" ry="116" fill="black"/></g>
+        </mask>
+      </defs>
+      <rect width="1000" height="620" fill="#fbf8ee" mask="url(#veilMask)"/>
+    </svg>
+
     <!-- Golf ball on tee: original SVG illustration -->
-    <svg class="hero__ball" viewBox="0 0 300 470" role="img" aria-label="Golf ball on a tee">
+    <svg class="hero__ball" id="heroBall" viewBox="0 0 300 470" role="img" aria-label="Golf ball printed with the Abuja Metro Golf Club logo, resting on a tee">
       <defs>
         <radialGradient id="ballBase" cx="36%" cy="30%" r="78%">
           <stop offset="0" stop-color="#ffffff"/>
           <stop offset=".5" stop-color="#f3f3ef"/>
-          <stop offset=".82" stop-color="#cfd1cb"/>
-          <stop offset="1" stop-color="#9da19a"/>
+          <stop offset=".82" stop-color="#d3d5cf"/>
+          <stop offset="1" stop-color="#a3a79f"/>
         </radialGradient>
         <radialGradient id="dimple" cx="62%" cy="66%" r="70%">
           <stop offset="0" stop-color="#ffffff" stop-opacity=".9"/>
-          <stop offset=".55" stop-color="#e9eae5" stop-opacity=".25"/>
-          <stop offset="1" stop-color="#7d817a" stop-opacity=".55"/>
+          <stop offset=".55" stop-color="#e9eae5" stop-opacity=".2"/>
+          <stop offset="1" stop-color="#7d817a" stop-opacity=".5"/>
         </radialGradient>
-        <pattern id="dimples" width="17" height="14.7" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
+        <pattern id="dimples" width="17" height="14.7" patternUnits="userSpaceOnUse">
           <circle cx="4.25" cy="3.7" r="3.5" fill="url(#dimple)"/>
           <circle cx="12.75" cy="11.05" r="3.5" fill="url(#dimple)"/>
         </pattern>
         <radialGradient id="ballShade" cx="38%" cy="32%" r="68%">
-          <stop offset="0" stop-color="#fff" stop-opacity=".75"/>
+          <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
           <stop offset=".35" stop-color="#fff" stop-opacity="0"/>
-          <stop offset=".8" stop-color="#3d4a3f" stop-opacity=".12"/>
-          <stop offset="1" stop-color="#1f2a22" stop-opacity=".42"/>
+          <stop offset=".78" stop-color="#3d4a3f" stop-opacity=".12"/>
+          <stop offset="1" stop-color="#1f2a22" stop-opacity=".45"/>
+        </radialGradient>
+        <radialGradient id="ballGloss" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".95"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="teeShadow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#3a1c08" stop-opacity=".45"/>
+          <stop offset="1" stop-color="#3a1c08" stop-opacity="0"/>
         </radialGradient>
         <linearGradient id="teeWood" x1="0" x2="1">
           <stop offset="0" stop-color="#8f4a1c"/>
@@ -121,9 +142,17 @@
       </defs>
       <path d="M96 262c18 10 90 10 108 0l-4 14c-12 9-30 13-38 22l-5 160c-1 6-9 6-10 0l-5-160c-8-9-26-13-38-22z" fill="url(#teeWood)"/>
       <ellipse cx="150" cy="262" rx="54" ry="9" fill="#a85d25"/>
-      <circle cx="150" cy="140" r="134" fill="url(#ballBase)"/>
-      <rect x="0" y="0" width="300" height="300" fill="url(#dimples)" clip-path="url(#ballClip)" opacity=".85"/>
-      <circle cx="150" cy="140" r="134" fill="url(#ballShade)"/>
+      <ellipse class="ball-contact" cx="150" cy="264" rx="46" ry="7" fill="url(#teeShadow)"/>
+      <g class="ball" id="ballBody">
+        <circle cx="150" cy="140" r="134" fill="url(#ballBase)"/>
+        <!-- Printed logo: JS rebuilds this as vertical strips projected onto the sphere -->
+        <g id="ballLogo" clip-path="url(#ballClip)">
+          <image href="assets/img/logo-amgc-green.png" x="71.25" y="107" width="157.5" height="65.6" opacity=".92"/>
+        </g>
+        <rect id="ballDimples" x="0" y="0" width="300" height="300" fill="url(#dimples)" clip-path="url(#ballClip)" opacity=".8"/>
+        <circle cx="150" cy="140" r="134" fill="url(#ballShade)"/>
+        <ellipse cx="104" cy="78" rx="38" ry="24" fill="url(#ballGloss)" opacity=".55" transform="rotate(-30 104 78)"/>
+      </g>
     </svg>
   </div>
   <div class="ticket-edge" aria-hidden="true"></div>

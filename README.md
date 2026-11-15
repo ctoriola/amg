@@ -30,6 +30,13 @@ Then visit http://localhost:8000. You can deploy it as-is to Netlify, Vercel, Gi
 9. Contact: secretariat details, a map and an enquiry form that opens a pre-filled email
 10. Footer
 
+## Motion
+
+- Golf ball: the AMGC logo is printed on the ball. In `main.js` the logo is cut into 22 vertical strips, and each strip is placed at its longitude on the sphere, so the logo wraps and compresses as the ball turns. On load the ball drops onto the tee and spins 2.5 turns while slowing down. It swings about 8 degrees past centre, then settles back with the logo facing front. Hovering or tapping the ball spins it once more.
+- Hero entrance: the background eases out of a slow zoom, the card rises, the elliptical window opens like an eyelid, and the headline rises line by line.
+- On scroll: headings reveal line by line, photos unveil upward, and grid items stagger in. The hero and Dialogue backgrounds move at a slower parallax rate, and the programme timeline draws as you scroll.
+- All motion uses one family of decelerating curves (`--ease-out`, `--ease-inout`). Visitors with "reduce motion" turned on get the finished state straight away.
+
 ## Content sources
 
 - Event details, pricing, programme and contacts come from the AMG Marketing & Partnership Prospectus.
